@@ -1,16 +1,19 @@
 package testCases;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import base.DriverSetup;
 
 public class TC001_LocatorLearning extends DriverSetup {
 
-	String baseurl = "https://rahulshettyacademy.com/locatorspractice/";
+	static String baseurl = "https://rahulshettyacademy.com/locatorspractice/";
 
-	@Test
+	@Test(invocationCount=2)
 	public void LocatorLearning() throws InterruptedException {
+
 		driver.get(baseurl);
 		driver.manage().window().maximize();
 		Thread.sleep(2000);
@@ -60,19 +63,49 @@ public class TC001_LocatorLearning extends DriverSetup {
 		driver.findElement(By.xpath("//div[@class='forgot-pwd-btn-conainer']/button[1]" )).click();
 		Thread.sleep(2000);
 		
-		
+		String password=getpassword(driver);
 		driver.findElement(By.cssSelector("#inputUsername")).sendKeys("Tanvir");
 		Thread.sleep(2000);
-		driver.findElement(By.cssSelector("input[type*='pass']")).sendKeys("rahulshettyacademy");
+		driver.findElement(By.xpath("//div[@class='forgot-pwd-btn-conainer']/button[1]")).click();
+    	
+	    
 		Thread.sleep(2000);
+		//driver.findElement(By.cssSelector("input[type*='pass']")).sendKeys("rahulshettyacademy");
+		
+		//driver.findElement(By.cssSelector("input[type*='pass']")).sendKeys("password");
+		//Thread.sleep(2000);
+		
 		driver.findElement(By.id("chkboxOne")).click();
-		Thread.sleep(2000);
+		//Thread.sleep(2000);
 		driver.findElement(By.xpath("//button[contains(@class,'submit')]")).click();
 		Thread.sleep(2000);
+		
+		//tagname[@attribute='value']
+		//Tagname[contains(text(),'')]
+		//driver.findElement(By.xpath("//button[contains(@class,'submit')]")).click();
+		//text= Sign in
+		//tagname=button
 
-
-
-	
+		//driver.findElement(By.xpath("//button[text()='Sign In']")).click();
+		//Thread.sleep(2000);
 	}
+	
 
-}
+	public static String getpassword(WebDriver driver) throws InterruptedException{
+		
+		driver.get(baseurl);
+		driver.findElement(By.linkText("Forgot your password?")).click();
+		Thread.sleep(2000);
+		
+		driver.findElement(By.cssSelector(".reset-pwd-btn")).click();
+		String passwordText = driver.findElement(By.cssSelector("form p")).getText();
+		//Please use temporary password 'rahulshettyacademy' to Login.
+		String[]passwordArray=passwordText.split("'");
+		//String[]passwordArray2=passwordText[1].split("");
+		//String password=passwordArray2[0];
+		
+		String password =passwordArray[1].split("'")[0];
+		return password;
+		
+	}
+} 
